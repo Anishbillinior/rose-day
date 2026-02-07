@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌹 Happy Rose Day, Sister! 🌹</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Animated gradient background */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a6f, #c44569, #f8b500, #ff6b6b);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            opacity: 0.7;
+            z-index: -1;
+        }
+
+        /* Particle canvas */
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Falling petals */
+        .petal {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(ellipse at center, #ff6b9d 0%, #c44569 100%);
+            border-radius: 50% 0 50% 0;
+            opacity: 0.8;
+            z-index: 2;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Audio control */
+        .audio-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .audio-control:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .audio-icon {
+            font-size: 24px;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            animation: fadeInDown 1s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 4em;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(255, 107, 157, 0.8),
+                         0 0 40px rgba(255, 107, 157, 0.6);
+            margin-bottom: 20px;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                text-shadow: 0 0 20px rgba(255, 107, 157, 0.8),
+                             0 0 40px rgba(255, 107, 157, 0.6);
+            }
+            50% {
+                text-shadow: 0 0 30px rgba(255, 107, 157, 1),
+                             0 0 60px rgba(255, 107, 157, 0.8),
+                             0 0 90px rgba(255, 107, 157, 0.6);
+            }
+        }
+
+        .subtitle {
+            font-size: 1.5em;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Interactive 3D Rose Garden */
+        .rose-garden {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+            padding: 20px;
+        }
+
+        .rose-container {
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .rose {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
+            transform-style: preserve-3d;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+        }
+
+        .rose-container:hover .rose {
+            transform: rotateY(360deg) scale(1.2);
+        }
+
+        .rose::before {
+            content: '🌹';
+            font-size: 100px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            filter: drop-shadow(0 0 10px rgba(255, 107, 157, 0.8));
+        }
+
+        .rose-count {
+            text-align: center;
+            color: #fff;
+            font-size: 1.2em;
+            margin-top: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Message card */
+        .message-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 50px;
+            margin: 50px auto;
+            max-width: 800px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease 0.5s both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 107, 157, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .message-card h2 {
+            color: #c44569;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .message-card p {
+            color: #333;
+            font-size: 1.3em;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        /* Heart button */
+        .heart-button {
+            display: block;
+            margin: 40px auto;
+            padding: 20px 50px;
+            font-size: 1.5em;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a6f);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .heart-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(255, 107, 107, 0.6);
+        }
+
+        .heart-button::before {
+            content: '💖';
+            position: absolute;
+            font-size: 2em;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .heart-button:hover::before {
+            opacity: 1;
+            animation: heartPulse 0.5s ease;
+        }
+
+        @keyframes heartPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        /* Floating hearts */
+        .floating-heart {
+            position: fixed;
+            font-size: 30px;
+            opacity: 0;
+            z-index: 999;
+            pointer-events: none;
+            animation: floatUp 3s ease-out;
+        }
+
+        @keyframes floatUp {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-1000px) rotate(360deg);
+            }
+        }
+
+        /* Countdown timer */
+        .countdown {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px auto;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .countdown h3 {
+            color: #fff;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .time-display {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .time-unit {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            min-width: 100px;
+        }
+
+        .time-unit .number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #c44569;
+        }
+
+        .time-unit .label {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Photo collage */
+        .photo-collage {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 50px 0;
+            padding: 20px;
+        }
+
+        .photo-frame {
+            background: #fff;
+            padding: 15px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .photo-frame:hover {
+            transform: translateY(-10px) rotate(2deg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .photo-placeholder {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+        }
+
+        /* Memory wall */
+        .memory-wall {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 40px;
+            margin: 50px auto;
+            max-width: 900px;
+        }
+
+        .memory-wall h2 {
+            color: #fff;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .memory-item {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .memory-item h3 {
+            color: #c44569;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .memory-item p {
+            color: #555;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        /* Fireworks on click */
+        .firework {
+            position: fixed;
+            width: 5px;
+            height: 5px;
+            background: #fff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #fff;
+            font-size: 1.2em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+            
+            .message-card {
+                padding: 30px;
+            }
+            
+            .time-unit {
+                min-width: 70px;
+                padding: 15px;
+            }
+            
+            .time-unit .number {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Particle canvas -->
+    <canvas id="particles"></canvas>
+
+    <!-- Audio control -->
+    <div class="audio-control" onclick="toggleMusic()">
+        <div class="audio-icon" id="audioIcon">🎵</div>
+    </div>
+    <audio id="bgMusic" loop>
+        <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=" type="audio/wav">
+    </audio>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>🌹 Happy Rose Day 🌹</h1>
+            <p class="subtitle">To the Most Amazing Sister in the World!</p>
+        </header>
+
+        <!-- Countdown -->
+        <div class="countdown">
+            <h3>🎉 Celebrating Our Bond 🎉</h3>
+            <div class="time-display">
+                <div class="time-unit">
+                    <div class="number" id="hours">00</div>
+                    <div class="label">Hours</div>
+                </div>
+                <div class="time-unit">
+                    <div class="number" id="minutes">00</div>
+                    <div class="label">Minutes</div>
+                </div>
+                <div class="time-unit">
+                    <div class="number" id="seconds">00</div>
+                    <div class="label">Seconds</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interactive Rose Garden -->
+        <div class="rose-garden" id="roseGarden">
+            <!-- Roses will be generated by JavaScript -->
+        </div>
+
+        <!-- Main Message Card -->
+        <div class="message-card">
+            <h2>💝 A Special Message For You 💝</h2>
+            <p>Dear Sister,</p>
+            <p>On this beautiful Rose Day, I want you to know that you're more precious to me than all the roses in the world. Your love, support, and the bond we share make every day special.</p>
+            <p>Just like a rose spreads its fragrance, you spread joy and happiness wherever you go. Thank you for being not just my sister, but my best friend, my confidant, and my partner in crime!</p>
+            <p>May your life always be as beautiful as a blooming rose garden, filled with love, laughter, and endless happiness.</p>
+            <p style="text-align: center; font-weight: bold; color: #c44569; font-size: 1.5em;">Love You Always! ❤️</p>
+            <button class="heart-button" onclick="createHeartExplosion(event)">
+                Click for a Surprise! 💖
+            </button>
+        </div>
+
+        <!-- Memory Wall -->
+        <div class="memory-wall">
+            <h2>📸 Our Beautiful Memories 📸</h2>
+            <div class="memory-item">
+                <h3>🌟 Remember When...</h3>
+                <p>We used to fight over the TV remote, but now we share everything - from secrets to dreams. Those childhood memories are the foundation of our unbreakable bond!</p>
+            </div>
+            <div class="memory-item">
+                <h3>🎈 The Adventures</h3>
+                <p>From silly pranks to late-night conversations, from sharing clothes to sharing life's biggest moments - every memory with you is a treasure I hold close to my heart.</p>
+            </div>
+            <div class="memory-item">
+                <h3>💫 Growing Together</h3>
+                <p>We've grown from playmates to soulmates, from partners in mischief to pillars of support for each other. Here's to many more years of making beautiful memories together!</p>
+            </div>
+        </div>
+
+        <!-- Photo Collage -->
+        <div class="photo-collage">
+            <div class="photo-frame" onclick="addSparkle(event)">
+                <div class="photo-placeholder">🌸</div>
+            </div>
+            <div class="photo-frame" onclick="addSparkle(event)">
+                <div class="photo-placeholder">🎀</div>
+            </div>
+            <div class="photo-frame" onclick="addSparkle(event)">
+                <div class="photo-placeholder">💐</div>
+            </div>
+            <div class="photo-frame" onclick="addSparkle(event)">
+                <div class="photo-placeholder">🌺</div>
+            </div>
+            <div class="photo-frame" onclick="addSparkle(event)">
+                <div class="photo-placeholder">🌷</div>
+            </div>
+            <div class="photo-frame" onclick="addSparkle(event)">
+                <div class="photo-placeholder">🌼</div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>Made with 💖 and countless roses just for you!</p>
+            <p>Happy Rose Day 2026! 🌹✨</p>
+        </footer>
+    </div>
+
+    <script>
+        // Particle system
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        const particleCount = 100;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 2 - 1;
+                this.speedY = Math.random() * 2 - 1;
+                this.color = `hsl(${Math.random() * 60 + 320}, 100%, ${Math.random() * 30 + 60}%)`;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+        animateParticles();
+
+        // Falling petals
+        function createPetal() {
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+            petal.style.left = Math.random() * 100 + '%';
+            petal.style.animationDuration = (Math.random() * 3 + 5) + 's';
+            petal.style.animationDelay = Math.random() * 5 + 's';
+            document.body.appendChild(petal);
+
+            setTimeout(() => petal.remove(), 10000);
+        }
+
+        setInterval(createPetal, 300);
+
+        // Generate roses
+        const roseGarden = document.getElementById('roseGarden');
+        const roseMessages = [
+            'Love', 'Joy', 'Peace', 'Hope', 'Dreams', 'Smile', 
+            'Laugh', 'Shine', 'Magic', 'Wonder', 'Grace', 'Beauty'
+        ];
+
+        roseMessages.forEach(message => {
+            const container = document.createElement('div');
+            container.className = 'rose-container';
+            container.innerHTML = `
+                <div class="rose"></div>
+                <div class="rose-count">${message}</div>
+            `;
+            roseGarden.appendChild(container);
+        });
+
+        // Countdown timer
+        function updateCountdown() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Heart explosion
+        function createHeartExplosion(event) {
+            const button = event.target;
+            const rect = button.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'floating-heart';
+                    heart.textContent = ['💖', '💝', '💗', '💓', '💕'][Math.floor(Math.random() * 5)];
+                    heart.style.left = centerX + 'px';
+                    heart.style.top = centerY + 'px';
+                    heart.style.transform = `translate(${(Math.random() - 0.5) * 200}px, 0)`;
+                    document.body.appendChild(heart);
+
+                    setTimeout(() => heart.remove(), 3000);
+                }, i * 50);
+            }
+
+            // Trigger fireworks
+            createFirework(centerX, centerY);
+        }
+
+        // Fireworks
+        function createFirework(x, y) {
+            const colors = ['#ff6b6b', '#ee5a6f', '#c44569', '#feca57', '#ff9ff3'];
+            
+            for (let i = 0; i < 50; i++) {
+                const firework = document.createElement('div');
+                firework.className = 'firework';
+                firework.style.left = x + 'px';
+                firework.style.top = y + 'px';
+                firework.style.background = colors[Math.floor(Math.random() * colors.length)];
+                document.body.appendChild(firework);
+
+                const angle = (Math.PI * 2 * i) / 50;
+                const velocity = 5 + Math.random() * 5;
+                const vx = Math.cos(angle) * velocity;
+                const vy = Math.sin(angle) * velocity;
+
+                let posX = x;
+                let posY = y;
+                let opacity = 1;
+
+                const animate = () => {
+                    posX += vx;
+                    posY += vy;
+                    opacity -= 0.02;
+
+                    firework.style.left = posX + 'px';
+                    firework.style.top = posY + 'px';
+                    firework.style.opacity = opacity;
+
+                    if (opacity > 0) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        firework.remove();
+                    }
+                };
+
+                animate();
+            }
+        }
+
+        // Add sparkle effect
+        function addSparkle(event) {
+            const rect = event.currentTarget.getBoundingClientRect();
+            const x = rect.left + rect.width / 2;
+            const y = rect.top + rect.height / 2;
+            
+            createFirework(x, y);
+        }
+
+        // Click anywhere for fireworks
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('button') && !e.target.closest('.photo-frame')) {
+                createFirework(e.clientX, e.clientY);
+            }
+        });
+
+        // Music control
+        let musicPlaying = false;
+        function toggleMusic() {
+            const music = document.getElementById('bgMusic');
+            const icon = document.getElementById('audioIcon');
+            
+            if (musicPlaying) {
+                music.pause();
+                icon.textContent = '🎵';
+            } else {
+                music.play();
+                icon.textContent = '🔊';
+            }
+            musicPlaying = !musicPlaying;
+        }
+
+        // Resize canvas
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Add hover effect to roses
+        document.querySelectorAll('.rose-container').forEach(container => {
+            container.addEventListener('click', (e) => {
+                const rect = container.getBoundingClientRect();
+                createFirework(rect.left + rect.width / 2, rect.top + rect.height / 2);
+            });
+        });
+    </script>
+</body>
+</html>
